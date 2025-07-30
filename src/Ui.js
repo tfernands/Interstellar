@@ -3,6 +3,7 @@ class UiController {
   constructor () {
     this.initUiToggle()
     this.initTeleportButton()
+    this.initFullscreenButton()
     this.initRadioButtons()
   }
 
@@ -31,6 +32,40 @@ class UiController {
       }, false)
   }
 
+  initFullscreenButton () {
+    const button = document.querySelector('#fullscreen')
+    if (!button) {
+      return
+    }
+
+    const toggleFullscreen = () => {
+      const doc = document
+      const el = doc.documentElement
+
+      if (!doc.fullscreenElement &&
+        !doc.mozFullScreenElement &&
+        !doc.webkitFullscreenElement &&
+        !doc.msFullscreenElement) {
+        const request = el.requestFullscreen ||
+          el.mozRequestFullScreen ||
+          el.webkitRequestFullscreen ||
+          el.msRequestFullscreen
+        request && request.call(el)
+      }
+      else {
+        const exit = doc.exitFullscreen ||
+          doc.mozCancelFullScreen ||
+          doc.webkitExitFullscreen ||
+          doc.msExitFullscreen
+        exit && exit.call(doc)
+      }
+
+      button.blur()
+    }
+
+    button.addEventListener('click', toggleFullscreen, false)
+  }
+
   initRadioButtons () {
     document.querySelector('#resolution')
       .addEventListener('change', event => {
@@ -52,7 +87,7 @@ class UiController {
       return null
     }
 
-    return parseInt(element.value)
+    return parseFloat(element.value)
   }
 
   showWebGLError () {
