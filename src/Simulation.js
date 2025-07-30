@@ -122,6 +122,25 @@ class Simulation {
         this.renderer.setZoom(this.renderer.zoom / 1.06)
       }
     }, false)
+
+    Ui.onScreenshotClick = () => {
+      const url = this.renderer.captureScreenshot(3)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'screenshot.png'
+      a.click()
+    }
+
+    Ui.onSSAAEnableChange = enabled => {
+      this.renderer.setSSAAEnabled(enabled, 3)
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.keyCode === 80) { // P
+        e.preventDefault()
+        Ui.onScreenshotClick && Ui.onScreenshotClick()
+      }
+    })
   }
 
   initPlayer () {

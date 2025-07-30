@@ -22,7 +22,6 @@ import {
 } from 'three'
 
 import EffectComposer from './postprocessing/EffectComposer'
-import RenderPass from './postprocessing/RenderPass'
 import BloomPass from './postprocessing/UnrealBloomPass'
 import SSAARenderPass from './postprocessing/SSAARenderPass'
 
@@ -234,6 +233,27 @@ export default class SimulationRenderer {
     this.zoom = zoom
 
     this.updateCamera()
+  }
+
+  setSSAAEnabled (enabled, level = this.ssaaLevel) {
+    this.ssaaEnabled = enabled
+    this.ssaaLevel = level
+    this.ssaaPass.sampleLevel = enabled ? level : 0
+  }
+
+  captureScreenshot (level = 3) {
+    const prevPixel = this.pixelSize
+    const prevEnabled = this.ssaaEnabled
+    const prevLevel = this.ssaaLevel
+
+    this.setPixelSize(1)
+    this.setSSAAEnabled(true, level)
+    this.render()
+    const url = this.renderer.domElement.toDataURL('image/png')
+    this.setSSAAEnabled(prevEnabled, prevLevel)
+    this.setPixelSize(prevPixel)
+    this.render()
+    return url
   }
 
   setSize (width, height, pixelSize = null) {
