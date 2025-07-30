@@ -5,6 +5,8 @@ class UiController {
     this.initTeleportButton()
     this.initFullscreenButton()
     this.initRadioButtons()
+    this.initScreenshotButton()
+    this.initSSAA()
   }
 
   initUiToggle () {
@@ -74,6 +76,23 @@ class UiController {
         const pixelSize = this.getSelectedPixelSize()
         this.onPixelSizeChange && this.onPixelSizeChange(pixelSize)
       }, false)
+  }
+
+  initScreenshotButton () {
+    const button = document.querySelector('#screenshot')
+    if (!button) return
+    button.addEventListener('click', () => {
+      this.onScreenshotClick && this.onScreenshotClick()
+      button.blur()
+    }, false)
+  }
+
+  initSSAA () {
+    const checkbox = document.querySelector('#ssaa-toggle')
+    if (!checkbox) return
+    checkbox.addEventListener('change', () => {
+      this.onSSAAEnableChange && this.onSSAAEnableChange(checkbox.checked)
+    }, false)
   }
 
   setPixelSize (value) {
