@@ -5,8 +5,8 @@ class UiController {
     this.initTeleportButton()
     this.initFullscreenButton()
     this.initRadioButtons()
+    this.initSSAARadioButtons()
     this.initScreenshotButton()
-    this.initSSAA()
   }
 
   initUiToggle () {
@@ -78,20 +78,28 @@ class UiController {
       }, false)
   }
 
-  initScreenshotButton () {
-    const button = document.querySelector('#screenshot')
-    if (!button) return
-    button.addEventListener('click', () => {
-      this.onScreenshotClick && this.onScreenshotClick()
-      button.blur()
+  initSSAARadioButtons () {
+    const container = document.querySelector('#ssaa')
+    if (!container) {
+      return
+    }
+
+    container.addEventListener('change', event => {
+      event.target.blur()
+
+      const ssaa = this.getSelectedSSAA()
+      this.onSSAAChange && this.onSSAAChange(ssaa)
     }, false)
   }
 
-  initSSAA () {
-    const checkbox = document.querySelector('#ssaa-toggle')
-    if (!checkbox) return
-    checkbox.addEventListener('change', () => {
-      this.onSSAAEnableChange && this.onSSAAEnableChange(checkbox.checked)
+  initScreenshotButton () {
+    const button = document.getElementById('screenshot')
+    if (!button) {
+      return
+    }
+    button.addEventListener('click', () => {
+      this.onScreenshot && this.onScreenshot()
+      button.blur()
     }, false)
   }
 
@@ -107,6 +115,19 @@ class UiController {
     }
 
     return parseFloat(element.value)
+  }
+
+  setSSAA (value) {
+    const el = document.querySelector(`[name=ssaa][value="${value}"]`)
+    if (el) el.checked = true
+  }
+
+  getSelectedSSAA () {
+    const element = document.querySelector('[name=ssaa]:checked')
+    if (!element) {
+      return 1
+    }
+    return parseInt(element.value, 10)
   }
 
   showWebGLError () {

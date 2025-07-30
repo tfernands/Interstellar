@@ -3,8 +3,8 @@ import {
   LinearFilter,
   RGBAFormat,
   ShaderMaterial,
-  UniformsUtils,
   AdditiveBlending,
+  UniformsUtils,
   OrthographicCamera,
   Scene,
   Mesh,
@@ -16,26 +16,23 @@ import CopyShader from './CopyShader'
 
 export default class SSAARenderPass extends Pass {
 
-  constructor (scene, camera, clearColor, clearAlpha) {
+  constructor (scene, camera, clearColor = 0x000000, clearAlpha = 0) {
     super()
 
     this.scene = scene
     this.camera = camera
 
-    // Number of samples is 2^sampleLevel
-    this.sampleLevel = 4
+    this.sampleLevel = 4 // 2^4 = 16 samples by default
     this.unbiased = true
 
-    this.clearColor = clearColor !== undefined ? clearColor : 0x000000
-    this.clearAlpha = clearAlpha !== undefined ? clearAlpha : 0
+    this.clearColor = clearColor
+    this.clearAlpha = clearAlpha
 
-    const copyShader = CopyShader
-    this.copyUniforms = UniformsUtils.clone(copyShader.uniforms)
-
+    this.copyUniforms = UniformsUtils.clone(CopyShader.uniforms)
     this.copyMaterial = new ShaderMaterial({
       uniforms: this.copyUniforms,
-      vertexShader: copyShader.vertexShader,
-      fragmentShader: copyShader.fragmentShader,
+      vertexShader: CopyShader.vertexShader,
+      fragmentShader: CopyShader.fragmentShader,
       premultipliedAlpha: true,
       transparent: true,
       blending: AdditiveBlending,
@@ -92,20 +89,14 @@ export default class SSAARenderPass extends Pass {
       const jitterOffset = jitterOffsets[i]
 
       if (this.camera.setViewOffset) {
-        this.camera.setViewOffset(
-          width,
-          height,
-          jitterOffset[0] * 0.0625,
-          jitterOffset[1] * 0.0625,
-          width,
-          height
-        )
+        this.camera.setViewOffset(width, height,
+          jitterOffset[0] * 0.0625, jitterOffset[1] * 0.0625,
+          width, height)
       }
 
       let sampleWeight = baseSampleWeight
-
       if (this.unbiased) {
-        const uniformCenteredDistribution = -0.5 + (i + 0.5) / jitterOffsets.length
+        const uniformCenteredDistribution = (-0.5 + (i + 0.5) / jitterOffsets.length)
         sampleWeight += roundingRange * uniformCenteredDistribution
       }
 
@@ -117,14 +108,13 @@ export default class SSAARenderPass extends Pass {
         renderer.setClearColor(0x000000, 0.0)
       }
 
-      renderer.render(this.scene2, this.camera2, this.renderToScreen ? null : writeBuffer, i === 0)
+      renderer.render(this.scene2, this.camera2, this.renderToScreen ? null : writeBuffer, (i === 0))
     }
 
     if (this.camera.clearViewOffset) this.camera.clearViewOffset()
 
     renderer.autoClear = autoClear
     renderer.setClearColor(oldClearColor, oldClearAlpha)
-
   }
 
 }

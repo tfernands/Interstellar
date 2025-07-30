@@ -74,6 +74,23 @@
       display: block;
     }
 
+    #ssaa {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      padding: 5px;
+      z-index: 10;
+    }
+
+    .no-ui #ssaa {
+      -webkit-transform: translateX(-100%);
+      transform: translateX(-100%);
+    }
+
+    #ssaa > label {
+      display: block;
+    }
+
     .ui-toggle {
       position: fixed;
       bottom: 5px;
@@ -132,6 +149,9 @@
       line-height: 1.5;
     }
     #fullscreen {
+      margin-left: 5px;
+    }
+    #screenshot {
       margin-left: 5px;
     }
 
@@ -203,6 +223,14 @@
   <label><input type="radio" name="resolution" value="1"> full resolution</label>
 </div>
 
+<div id="ssaa">
+  <h3>SSAA</h3>
+  <label><input type="radio" name="ssaa" value="1" checked> off</label>
+  <label><input type="radio" name="ssaa" value="2"> 2x</label>
+  <label><input type="radio" name="ssaa" value="4"> 4x</label>
+  <label><input type="radio" name="ssaa" value="8"> 8x</label>
+</div>
+
 <div id="version">
   <a target="_blank" href="https://github.com/sirxemic/Interstellar">version 2.0.1</a>
 </div>
@@ -211,7 +239,6 @@
   <label><input type="checkbox"> Hide UI</label>
   <button id="fullscreen">Full Screen</button>
   <button id="screenshot">Screenshot</button>
-  <label id="ssaa-control"><input type="checkbox" id="ssaa-toggle"> 8x SSAA</label>
 </div>
 
 <div id="container"></div>
