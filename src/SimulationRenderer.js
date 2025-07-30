@@ -24,6 +24,7 @@ import {
 import EffectComposer from './postprocessing/EffectComposer'
 import RenderPass from './postprocessing/RenderPass'
 import BloomPass from './postprocessing/UnrealBloomPass'
+import SSAARenderPass from './postprocessing/SSAARenderPass'
 
 const textureLoader = new TextureLoader()
 
@@ -38,6 +39,8 @@ export default class SimulationRenderer {
     this.pixelSize = 4
     this.width = window.innerWidth
     this.height = window.innerHeight
+
+    this.ssaa = 1
 
     this.renderer = new WebGLRenderer()
     this.renderer.setSize(this.width, this.height)
@@ -65,18 +68,7 @@ export default class SimulationRenderer {
     this.quad.frustumCulled = false
     this.scene.add(this.quad)
 
-    this.renderPasses = [
-      new RenderPass(this.scene, this.camera),
-      new BloomPass(1024, 2.7, 0.7, 0.8)
-    ]
-
-    this.renderPasses[this.renderPasses.length - 1].renderToScreen = true
-
-    this.composer = new EffectComposer(this.renderer)
-
-    this.renderPasses.forEach(pass => {
-      this.composer.addPass(pass)
-    })
+    this.createComposer()
   }
 
   loadConfig (config) {
@@ -158,11 +150,63 @@ export default class SimulationRenderer {
     })
   }
 
+  createComposer () {
+    this.renderPass = new RenderPass(this.scene, this.camera)
+    this.ssaaPass = new SSAARenderPass(this.scene, this.camera)
+    this.bloomPass = new BloomPass(1024, 2.7, 0.7, 0.8)
+    this.bloomPass.renderToScreen = true
+
+    this.composer = new EffectComposer(this.renderer)
+
+    if (this.ssaa > 1) {
+      this.ssaaPass.sampleLevel = Math.log2(this.ssaa)
+      this.composer.addPass(this.ssaaPass)
+    }
+    else {
+      this.composer.addPass(this.renderPass)
+    }
+
+    this.composer.addPass(this.bloomPass)
+
+    this.updateEffectComposer()
+  }
+
+  setSSAA (samples) {
+    samples = Math.max(1, Math.min(samples, 8))
+    if (samples === this.ssaa) {
+      return
+    }
+
+    this.ssaa = samples
+    this.createComposer()
+  }
+
+  saveScreenshot (samples = 1) {
+    const oldPixelSize = this.pixelSize
+    const oldSsaa = this.ssaa
+
+    this.setPixelSize(1)
+    this.setSSAA(samples)
+    this.render()
+
+    const dataURL = this.renderer.domElement.toDataURL('image/png')
+
+    this.setSSAA(oldSsaa)
+    this.setPixelSize(oldPixelSize)
+
+    const link = document.createElement('a')
+    link.href = dataURL
+    link.download = 'screenshot.png'
+    link.click()
+  }
+
   updateEffectComposer () {
-    this.composer.setSize(
-      Math.floor(this.width / this.pixelSize),
-      Math.floor(this.height / this.pixelSize)
-    )
+    const w = Math.floor(this.width / this.pixelSize)
+    const h = Math.floor(this.height / this.pixelSize)
+    this.composer.setSize(w, h)
+    if (this.ssaaPass) {
+      this.ssaaPass.setSize(w, h)
+    }
   }
 
   updateCamera () {
