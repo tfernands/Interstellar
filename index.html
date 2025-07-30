@@ -103,7 +103,7 @@
       color: #0080ff;
     }
 
-    kbd, #teleport { color: orange }
+    kbd, #teleport, #fullscreen { color: orange }
 
     #container {
       position: fixed;
@@ -130,6 +130,9 @@
       border: 1px solid;
       background: rgba(0,0,0,0.5);
       line-height: 1.5;
+    }
+    #fullscreen {
+      margin-left: 5px;
     }
 
     #keyboard-controls { display: block; }
@@ -195,9 +198,9 @@
 
 <div id="resolution">
   <h3>Resolution</h3>
-  <label><input type="radio" name="resolution" value="4"> low</label>
-  <label><input type="radio" name="resolution" value="2"> medium</label>
-  <label><input type="radio" name="resolution" value="1"> high</label>
+  <label><input type="radio" name="resolution" value="4"> 1/4 pixel</label>
+  <label><input type="radio" name="resolution" value="2"> 1/2 pixel</label>
+  <label><input type="radio" name="resolution" value="1"> full resolution</label>
 </div>
 
 <div id="version">
@@ -206,6 +209,7 @@
 
 <div class="ui-toggle">
   <label><input type="checkbox"> Hide UI</label>
+  <button id="fullscreen">Full Screen</button>
 </div>
 
 <div id="container"></div>
