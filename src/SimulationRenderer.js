@@ -22,6 +22,7 @@ import {
 } from 'three'
 
 import EffectComposer from './postprocessing/EffectComposer'
+import RenderPass from './postprocessing/RenderPass'
 import BloomPass from './postprocessing/UnrealBloomPass'
 import SSAARenderPass from './postprocessing/SSAARenderPass'
 
