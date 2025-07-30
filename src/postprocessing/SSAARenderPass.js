@@ -108,7 +108,12 @@ export default class SSAARenderPass extends Pass {
         renderer.setClearColor(0x000000, 0.0)
       }
 
-      renderer.render(this.scene2, this.camera2, this.renderToScreen ? null : writeBuffer, (i === 0))
+      renderer.render(
+        this.scene2,
+        this.camera2,
+        this.renderToScreen ? null : readBuffer,
+        i === 0
+      )
     }
 
     if (this.camera.clearViewOffset) this.camera.clearViewOffset()
