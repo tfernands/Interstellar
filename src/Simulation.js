@@ -84,13 +84,8 @@ class Simulation {
       this.renderer.setPixelSize(pixelSize)
     }
 
-    Ui.onSSAAChange = samples => {
-      this.renderer.setSSAA(samples)
-    }
-
     Ui.onScreenshot = () => {
-      const samples = Ui.getSelectedSSAA ? Ui.getSelectedSSAA() : 1
-      this.renderer.saveScreenshot(samples)
+      this.renderer.saveScreenshot()
     }
 
     window.addEventListener(
@@ -106,8 +101,6 @@ class Simulation {
       Ui.setPixelSize(pixelSize)
     }
 
-    const ssaa = Ui.getSelectedSSAA ? Ui.getSelectedSSAA() : 1
-    this.renderer.setSSAA(ssaa)
 
     this.renderer.setSize(window.innerWidth, window.innerHeight, pixelSize)
 
@@ -124,16 +117,13 @@ class Simulation {
     }, false)
 
     Ui.onScreenshotClick = () => {
-      const url = this.renderer.captureScreenshot(3)
+      const url = this.renderer.captureScreenshot()
       const a = document.createElement('a')
       a.href = url
       a.download = 'screenshot.png'
       a.click()
     }
 
-    Ui.onSSAAEnableChange = enabled => {
-      this.renderer.setSSAAEnabled(enabled, 3)
-    }
 
     document.addEventListener('keydown', e => {
       if (e.keyCode === 80) { // P
@@ -196,8 +186,7 @@ class Simulation {
       else if (e.keyCode === 80) {
         e.preventDefault()
 
-        const samples = Ui.getSelectedSSAA ? Ui.getSelectedSSAA() : 1
-        this.renderer.saveScreenshot(samples)
+        this.renderer.saveScreenshot()
       }
     })
   }

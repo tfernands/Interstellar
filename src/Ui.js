@@ -5,7 +5,6 @@ class UiController {
     this.initTeleportButton()
     this.initFullscreenButton()
     this.initRadioButtons()
-    this.initSSAARadioButtons()
     this.initScreenshotButton()
   }
 
@@ -78,19 +77,6 @@ class UiController {
       }, false)
   }
 
-  initSSAARadioButtons () {
-    const container = document.querySelector('#ssaa')
-    if (!container) {
-      return
-    }
-
-    container.addEventListener('change', event => {
-      event.target.blur()
-
-      const ssaa = this.getSelectedSSAA()
-      this.onSSAAChange && this.onSSAAChange(ssaa)
-    }, false)
-  }
 
   initScreenshotButton () {
     const button = document.getElementById('screenshot')
@@ -117,18 +103,6 @@ class UiController {
     return parseFloat(element.value)
   }
 
-  setSSAA (value) {
-    const el = document.querySelector(`[name=ssaa][value="${value}"]`)
-    if (el) el.checked = true
-  }
-
-  getSelectedSSAA () {
-    const element = document.querySelector('[name=ssaa]:checked')
-    if (!element) {
-      return 1
-    }
-    return parseInt(element.value, 10)
-  }
 
   showWebGLError () {
     document.querySelector('#webgl-error').style.display = 'block'
