@@ -77,7 +77,6 @@ class UiController {
       }, false)
   }
 
-
   initScreenshotButton () {
     const button = document.getElementById('screenshot')
     if (!button) {
@@ -102,7 +101,6 @@ class UiController {
 
     return parseFloat(element.value)
   }
-
 
   showWebGLError () {
     document.querySelector('#webgl-error').style.display = 'block'
