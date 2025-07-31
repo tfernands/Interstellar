@@ -74,23 +74,6 @@
       display: block;
     }
 
-    #ssaa {
-      position: fixed;
-      bottom: 60px;
-      left: 0;
-      padding: 5px;
-      z-index: 10;
-    }
-
-    .no-ui #ssaa {
-      -webkit-transform: translateX(-100%);
-      transform: translateX(-100%);
-    }
-
-    #ssaa > label {
-      display: block;
-    }
-
     .ui-toggle {
       position: fixed;
       bottom: 5px;
@@ -220,15 +203,9 @@
   <h3>Resolution</h3>
   <label><input type="radio" name="resolution" value="4"> 1/4 pixel</label>
   <label><input type="radio" name="resolution" value="2"> 1/2 pixel</label>
-  <label><input type="radio" name="resolution" value="1"> full resolution</label>
-</div>
-
-<div id="ssaa">
-  <h3>SSAA</h3>
-  <label><input type="radio" name="ssaa" value="1" checked> off</label>
-  <label><input type="radio" name="ssaa" value="2"> 2x</label>
-  <label><input type="radio" name="ssaa" value="4"> 4x</label>
-  <label><input type="radio" name="ssaa" value="8"> 8x</label>
+  <label><input type="radio" name="resolution" value="1" checked> full resolution</label>
+  <label><input type="radio" name="resolution" value="0.5"> 2x SSAA</label>
+  <label><input type="radio" name="resolution" value="0.25"> 4x SSAA</label>
 </div>
 
 <div id="version">
