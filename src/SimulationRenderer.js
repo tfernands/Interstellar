@@ -39,7 +39,6 @@ export default class SimulationRenderer {
     this.width = window.innerWidth
     this.height = window.innerHeight
 
-
     this.renderer = new WebGLRenderer()
     this.renderer.setSize(this.width, this.height)
     this.renderer.sortObjects = false

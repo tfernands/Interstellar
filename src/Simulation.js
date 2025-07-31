@@ -101,7 +101,6 @@ class Simulation {
       Ui.setPixelSize(pixelSize)
     }
 
-
     this.renderer.setSize(window.innerWidth, window.innerHeight, pixelSize)
 
     window.addEventListener('wheel', e => {
@@ -123,7 +122,6 @@ class Simulation {
       a.download = 'screenshot.png'
       a.click()
     }
-
 
     document.addEventListener('keydown', e => {
       if (e.keyCode === 80) { // P
